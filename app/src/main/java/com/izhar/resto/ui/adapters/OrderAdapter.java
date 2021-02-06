@@ -26,12 +26,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> impl
     public ArrayList toCart = new ArrayList<>();
     TextView textView;
     public int fabNumber = 0;
+
     public OrderAdapter(List<Food> foods, Context context, TextView textView) {
         this.foods = foods;
         this.context = context;
         this.textView = textView;
         allFoods = new ArrayList<>(foods);
-        for (int i = 0 ; i < foods.size(); i++)
+        for (int i = 0; i < foods.size(); i++)
             toCart.add(i, null);
     }
 
@@ -69,8 +70,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> impl
             if (constraint.toString().isEmpty())
                 filteredItems.addAll(allFoods);
             else {
-                for (Food item : allFoods){
-                    if (item.getName().toLowerCase().contains(constraint.toString().toLowerCase())){
+                for (Food item : allFoods) {
+                    if (item.getName().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredItems.add(item);
                     }
                 }
@@ -91,6 +92,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> impl
     class Holder extends RecyclerView.ViewHolder {
         TextView name, price;
         Button add;
+
         public Holder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
@@ -99,19 +101,21 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> impl
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (add.getText().toString().equalsIgnoreCase("add")){
+                    if (add.getText().toString().equalsIgnoreCase("add")) {
                         toCart.add(getAdapterPosition(), new Food(foods.get(getAdapterPosition()).getName(), foods.get(getAdapterPosition()).getPrice()));
                         add.setText("Remove");
                         add.setBackgroundResource(R.drawable.btn_remove);
                         fabNumber++;
                         textView.setText(fabNumber + "");
-                    }
-                    else {
+                    } else {
                         add.setText("Add");
                         add.setBackgroundResource(R.drawable.btn_add);
                         fabNumber--;
                         textView.setText(fabNumber + "");
-                        toCart.remove(getAdapterPosition());
+                        if (fabNumber == 0)
+                            toCart.clear();
+                        else
+                            toCart.remove(getAdapterPosition());
                     }
                 }
             });

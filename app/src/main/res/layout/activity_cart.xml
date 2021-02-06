@@ -8,14 +8,31 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_order"
+        android:layout_above="@id/linear"
         android:id="@+id/recycle"/>
-    <Button
+    <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="order"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="#FFF"
         android:layout_alignParentBottom="true"
-        android:id="@+id/btn_order"/>
+        android:layout_margin="0dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:hint="table number"
+            android:id="@+id/table_number"
+            android:inputType="number"
+            android:layout_margin="5dp"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:text="order"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#FFF"
+            android:id="@+id/btn_order"/>
+    </LinearLayout>
 </RelativeLayout>

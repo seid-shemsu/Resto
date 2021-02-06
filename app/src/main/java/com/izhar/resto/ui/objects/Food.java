@@ -3,11 +3,24 @@ package com.izhar.resto.ui.objects;
 import java.io.Serializable;
 
 public class Food implements Serializable {
-    String name, price;
-
+    String name, price, quantity;
     public Food(String name, String price) {
         this.name = name;
         this.price = price;
+    }
+
+    public Food(String name, String price, String quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 
     public String getName() {

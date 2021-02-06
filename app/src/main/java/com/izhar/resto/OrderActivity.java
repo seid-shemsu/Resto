@@ -50,7 +50,7 @@ public class OrderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(OrderActivity.this, CartActivity.class);
                 Bundle args = new Bundle();
-                args.putSerializable("items", (Serializable) orderAdapter.toCart);
+                args.putSerializable("foods", (Serializable) orderAdapter.toCart);
                 intent.putExtra("bundle", args);
                 startActivity(intent);
                 //startActivity(new Intent(getContext(), CartActivity.class).putParcelableArrayListExtra("items", itemAdapter.toCart));

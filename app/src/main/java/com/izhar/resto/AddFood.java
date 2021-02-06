@@ -22,6 +22,7 @@ public class AddFood extends AppCompatActivity {
         final Button add = findViewById(R.id.add);
         final EditText name = findViewById(R.id.name);
         final EditText price = findViewById(R.id.price);
+        final EditText table_number = findViewById(R.id.table_number);
         final LottieAnimationView loader = findViewById(R.id.loader);
         add.setOnClickListener(new View.OnClickListener() {
             @Override

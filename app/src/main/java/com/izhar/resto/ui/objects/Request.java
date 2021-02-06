@@ -5,27 +5,28 @@ import java.util.Map;
 
 public class Request {
     List<Food> foods;
-    String total, dateTime;
-    Map<Food, Integer> foodIntegerMap;
+    String total, dateTime, table_number;
 
-    public Request(String total, String dateTime, Map<Food, Integer> foodIntegerMap) {
+
+    public Request(List<Food> foods, String total, String dateTime, String table_number) {
+        this.foods = foods;
         this.total = total;
         this.dateTime = dateTime;
-        this.foodIntegerMap = foodIntegerMap;
-    }
-
-    public Map<Food, Integer> getFoodIntegerMap() {
-        return foodIntegerMap;
-    }
-
-    public void setFoodIntegerMap(Map<Food, Integer> foodIntegerMap) {
-        this.foodIntegerMap = foodIntegerMap;
+        this.table_number = table_number;
     }
 
     public Request(List<Food> foods, String total, String dateTime) {
         this.foods = foods;
         this.total = total;
         this.dateTime = dateTime;
+    }
+
+    public String getTable_number() {
+        return table_number;
+    }
+
+    public void setTable_number(String table_number) {
+        this.table_number = table_number;
     }
 
     public List<Food> getFoods() {
