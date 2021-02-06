@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Request {
     List<Food> foods;
-    String total, dateTime, table_number;
+    String id, total, dateTime, table_number;
 
 
     public Request(List<Food> foods, String total, String dateTime, String table_number) {
@@ -19,6 +19,21 @@ public class Request {
         this.foods = foods;
         this.total = total;
         this.dateTime = dateTime;
+    }
+
+    public Request(String id, String total, String dateTime, String table_number) {
+        this.id = id;
+        this.total = total;
+        this.dateTime = dateTime;
+        this.table_number = table_number;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTable_number() {
