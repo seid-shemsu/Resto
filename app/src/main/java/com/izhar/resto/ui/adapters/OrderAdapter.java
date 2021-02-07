@@ -72,7 +72,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> impl
             else {
                 for (Food item : allFoods) {
                     if (item.getName().toLowerCase().contains(constraint.toString().toLowerCase())) {
-                        filteredItems.add(item);
+                        filteredItems.addAll(allFoods);
+                        filteredItems.add(0, item);
                     }
                 }
             }

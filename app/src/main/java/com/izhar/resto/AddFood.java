@@ -2,6 +2,7 @@ package com.izhar.resto;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,7 @@ public class AddFood extends AppCompatActivity {
                 data.child(System.currentTimeMillis() + "").setValue(new Food(name.getText().toString(), price.getText().toString())).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        startActivity(new Intent(AddFood.this, MainActivity.class));
                         finish();
                     }
                 });

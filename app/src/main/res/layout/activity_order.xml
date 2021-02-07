@@ -23,7 +23,7 @@
         android:layout_height="55dp"
         android:src="@drawable/fab_item"
         android:id="@+id/fab"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|center"
         android:layout_margin="20dp"/>
     <TextView
         android:id="@+id/fab_number"
