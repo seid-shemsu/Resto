@@ -41,12 +41,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), AddFood.class));
+                getActivity().finish();
             }
         });
         new_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), OrderActivity.class));
+                getActivity().finish();
             }
         });
 
@@ -66,6 +68,8 @@ public class HomeFragment extends Fragment {
                 if (dataSnapshot.hasChildren()){
                     pending_text.setText(dataSnapshot.getChildrenCount() + "");
                 }
+                else
+                    pending_text.setText("0");
             }
 
             @Override

@@ -39,6 +39,7 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("New Order");
         setContentView(R.layout.activity_order);
         recycler = findViewById(R.id.recycle);
         recycler.setHasFixedSize(true);

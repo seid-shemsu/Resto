@@ -7,6 +7,8 @@ public class Request {
     List<Food> foods;
     String id, total, dateTime, table_number;
 
+    public Request() {
+    }
 
     public Request(List<Food> foods, String total, String dateTime, String table_number) {
         this.foods = foods;

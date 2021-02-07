@@ -9,6 +9,9 @@ public class Food implements Serializable {
         this.price = price;
     }
 
+    public Food() {
+    }
+
     public Food(String name, String price, String quantity) {
         this.name = name;
         this.price = price;

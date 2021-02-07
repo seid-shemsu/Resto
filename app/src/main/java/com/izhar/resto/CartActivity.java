@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -34,12 +35,14 @@ public class CartActivity extends AppCompatActivity {
     RecyclerView recycle;
     CartAdapter cartAdapter;
     ArrayList<Integer> quantities;
-    Map<Food, Integer> amount = new HashMap<>();
+    LottieAnimationView loader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Cart");
         setContentView(R.layout.activity_cart);
         order = findViewById(R.id.btn_order);
+        loader = findViewById(R.id.loader);
         table_number = findViewById(R.id.table_number);
         recycle = findViewById(R.id.recycle);
         recycle.setHasFixedSize(true);
@@ -53,29 +56,31 @@ public class CartActivity extends AppCompatActivity {
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0 ; i < foods.size(); i++){
-                    Toast.makeText(CartActivity.this, foods.get(i).getName() + " " + cartAdapter.quantities.get(i), Toast.LENGTH_SHORT).show();
+                if (table_number.getText().toString().length() == 0){
+                    Toast.makeText(CartActivity.this, "enter table number", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-        order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                quantities = cartAdapter.quantities;
-                quantities.removeAll(Arrays.asList(0,null));
-                List<Food> foodList = new ArrayList<>();
-                for (int i = 0 ; i < foods.size(); i++){
-                    foodList.add(new Food(foods.get(i).getName(), foods.get(i).getPrice(), Integer.toString(quantities.get(i))));
-                }
-                DatabaseReference pending = FirebaseDatabase.getInstance().getReference().child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()) +"");
-                SimpleDateFormat sdp = new SimpleDateFormat("hh:mm");
-                pending.child(System.currentTimeMillis() + "").setValue(new Request(foodList, cartAdapter.getTotal() +"", sdp.format(new Date()), table_number.getText().toString())).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        startActivity(new Intent(CartActivity.this, MainActivity.class));
-                        finish();
+                else {
+                    loader.setVisibility(View.VISIBLE);
+                    table_number.setEnabled(false);
+                    order.setEnabled(false);
+                    recycle.setEnabled(false);
+                    quantities = cartAdapter.quantities;
+                    quantities.removeAll(Arrays.asList(0,null));
+                    List<Food> foodList = new ArrayList<>();
+                    for (int i = 0 ; i < foods.size(); i++){
+                        foodList.add(new Food(foods.get(i).getName(), foods.get(i).getPrice(), Integer.toString(quantities.get(i))));
                     }
-                });
+                    DatabaseReference pending = FirebaseDatabase.getInstance().getReference().child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()) +"");
+                    SimpleDateFormat sdp = new SimpleDateFormat("hh:mm");
+                    pending.child(System.currentTimeMillis() + "").setValue(new Request(foodList, cartAdapter.getTotal() +"", sdp.format(new Date()), table_number.getText().toString())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            startActivity(new Intent(CartActivity.this, MainActivity.class));
+                            finish();
+                        }
+                    });
+                }
+
             }
         });
 
