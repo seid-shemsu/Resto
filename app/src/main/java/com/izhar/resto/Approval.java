@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,7 @@ public class Approval extends AppCompatActivity {
     TextView total;
     List<Food> foods = new ArrayList<>();
     String id;
+    SharedPreferences user ;
     ApprovalAdapter adapter;
     Request request;
     @Override
@@ -44,6 +46,7 @@ public class Approval extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_approval);
         id = getIntent().getExtras().getString("orderId");
+        user = getSharedPreferences("user", MODE_PRIVATE);
         approve = findViewById(R.id.approve);
         loader = findViewById(R.id.loader);
         total = findViewById(R.id.total_price);
@@ -54,8 +57,9 @@ public class Approval extends AppCompatActivity {
         approve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference pending = FirebaseDatabase.getInstance().getReference().child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date())).child(id);
-                final DatabaseReference finished = FirebaseDatabase.getInstance().getReference().child("finished").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date())).child(id);
+                String next = getNext();
+                DatabaseReference pending = FirebaseDatabase.getInstance().getReference(user.getString("user", "admin")).child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date())).child(id);
+                DatabaseReference finished = FirebaseDatabase.getInstance().getReference(user.getString("user", "admin")).child("finished").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date())).child(id);
                 finished.setValue(request).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -63,14 +67,31 @@ public class Approval extends AppCompatActivity {
                     }
                 });
                 pending.removeValue();
+                pending = FirebaseDatabase.getInstance().getReference(next).child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date())).child(id);
+                pending.setValue(request);
+                if (user.getString("user", "admin").equalsIgnoreCase("waiter")){
+                    finished = FirebaseDatabase.getInstance().getReference().child("finished").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date())).child(id);
+                    finished.setValue(request);
+                }
                 startActivity(new Intent(Approval.this, MainActivity.class));
                 finish();
             }
         });
     }
 
+    private String getNext() {
+        switch (user.getString("user", "admin")){
+            case "cashier":
+                return "cooker";
+            case "cooker":
+                return "waiter";
+            default:
+                return "admin";
+        }
+    }
+
     private void getData() {
-        final DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date())).child(id);
+        final DatabaseReference data = FirebaseDatabase.getInstance().getReference(user.getString("user", "admin")).child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date())).child(id);
         data.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

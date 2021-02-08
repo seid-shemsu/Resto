@@ -34,7 +34,10 @@ public class FinishedTab extends Fragment {
     public FinishedTab() {
         // Required empty public constructor
     }
-
+    String user;
+    public FinishedTab(String user){
+        this.user = user;
+    }
     List<Request> requests = new ArrayList<>();
     FinishedAdapter finishedAdapter;
     RecyclerView recycle;
@@ -53,10 +56,11 @@ public class FinishedTab extends Fragment {
         return view;
     }
     private void getData() {
-        DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("finished").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-        data.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user).child("finished").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+        data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                requests.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     String id = snapshot.getKey();
                     String time = snapshot.child("dateTime").getValue().toString();

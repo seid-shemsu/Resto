@@ -1,6 +1,8 @@
 package com.izhar.resto.ui.home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,49 +26,46 @@ import com.izhar.resto.AddFood;
 import com.izhar.resto.R;
 import com.izhar.resto.OrderActivity;
 import com.izhar.resto.ui.adapters.OrderAdapter;
+import com.izhar.resto.ui.dashboard.PagerAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
     TextView pending_text, finished_text;
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        Button new_order = root.findViewById(R.id.new_order);
-        Button add = root.findViewById(R.id.add_food);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), AddFood.class));
-                getActivity().finish();
-            }
-        });
-        new_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), OrderActivity.class));
-                getActivity().finish();
-            }
-        });
+    View root;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        pending_text = root.findViewById(R.id.pending);
-        finished_text = root.findViewById(R.id.finished);
-        setValues();
+        SharedPreferences user = getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        if (user.getString("user", "admin").equalsIgnoreCase("cashier")){
+            root = inflater.inflate(R.layout.fragment_home, container, false);
+            pending_text = root.findViewById(R.id.pending);
+            finished_text = root.findViewById(R.id.finished);
+            setValues();
+            Button new_order = root.findViewById(R.id.new_order);
+            if (!user.getString("user", "admin").equalsIgnoreCase("cashier"))
+                new_order.setVisibility(View.GONE);
+            new_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getContext(), OrderActivity.class));
+                    getActivity().finish();
+                }
+            });
+        }
+        else {
+            root = inflater.inflate(R.layout.not_access, container, false);
+        }
         return root;
     }
 
     private void setValues() {
-        final DatabaseReference pending = FirebaseDatabase.getInstance().getReference().child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+        final DatabaseReference ordered = FirebaseDatabase.getInstance().getReference().child("ordered").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
         DatabaseReference finished = FirebaseDatabase.getInstance().getReference().child("finished").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-        pending.addListenerForSingleValueEvent(new ValueEventListener() {
+        ordered.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 if (dataSnapshot.hasChildren()){
                     pending_text.setText(dataSnapshot.getChildrenCount() + "");
                 }
@@ -77,7 +78,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        finished.addListenerForSingleValueEvent(new ValueEventListener() {
+        finished.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren())

@@ -70,8 +70,10 @@ public class CartActivity extends AppCompatActivity {
                     for (int i = 0 ; i < foods.size(); i++){
                         foodList.add(new Food(foods.get(i).getName(), foods.get(i).getPrice(), Integer.toString(quantities.get(i))));
                     }
-                    DatabaseReference pending = FirebaseDatabase.getInstance().getReference().child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()) +"");
                     SimpleDateFormat sdp = new SimpleDateFormat("hh:mm");
+                    DatabaseReference ordered = FirebaseDatabase.getInstance().getReference().child("ordered").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()) +"");
+                    ordered.child(System.currentTimeMillis() + "").setValue(new Request(foodList, cartAdapter.getTotal() +"", sdp.format(new Date()), table_number.getText().toString()));
+                    DatabaseReference pending = FirebaseDatabase.getInstance().getReference().child("cooker").child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()) +"");
                     pending.child(System.currentTimeMillis() + "").setValue(new Request(foodList, cartAdapter.getTotal() +"", sdp.format(new Date()), table_number.getText().toString())).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

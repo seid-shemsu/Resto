@@ -22,4 +22,10 @@
         android:name="com.izhar.resto.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_admin"
+        android:name="com.izhar.resto.ui.admin.AdminFragment"
+        android:label="@string/admin"
+        tools:layout="@layout/fragment_admin"/>
 </navigation>

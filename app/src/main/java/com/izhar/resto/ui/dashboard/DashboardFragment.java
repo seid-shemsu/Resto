@@ -1,5 +1,7 @@
 package com.izhar.resto.ui.dashboard;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,29 +23,38 @@ public class DashboardFragment extends Fragment {
     TabLayout tab;
     ViewPager view;
     PagerAdapter pagerAdapter;
+    View root;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        tab = root.findViewById(R.id.tab);
-        view = root.findViewById(R.id.viewpager);
-        pagerAdapter = new PagerAdapter(getFragmentManager(), tab.getTabCount());
-        view.setAdapter(pagerAdapter);
-        view.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tab));
-        tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                view.setCurrentItem(tab.getPosition());
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+        SharedPreferences user = getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        if (user.getString("user", "admin").equalsIgnoreCase("waiter")){
+            root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+            tab = root.findViewById(R.id.tab);
+            view = root.findViewById(R.id.viewpager);
+            pagerAdapter = new PagerAdapter(getFragmentManager(), tab.getTabCount(), user.getString("user", "admin"));
+            view.setAdapter(pagerAdapter);
+            view.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tab));
+            tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    view.setCurrentItem(tab.getPosition());
+                }
 
-            }
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+                }
 
-            }
-        });
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+        }
+        else{
+            root = inflater.inflate(R.layout.not_access, container, false);
+        }
+
         return root;
     }
 }

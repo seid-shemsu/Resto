@@ -24,6 +24,7 @@
         android:id="@+id/loader"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
+        app:lottie_speed="2.5"
         app:lottie_rawRes="@raw/circle_loader"
         android:layout_centerInParent="true"/>
 </RelativeLayout>

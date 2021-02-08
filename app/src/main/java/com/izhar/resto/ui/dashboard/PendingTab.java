@@ -35,7 +35,10 @@ public class PendingTab extends Fragment {
     public PendingTab() {
         // Required empty public constructor
     }
-
+    String user;
+    public PendingTab(String user){
+        this.user = user;
+    }
     List<Request> requests = new ArrayList<>();
     PendingAdapter pendingAdapter;
     RecyclerView recycle;
@@ -55,10 +58,11 @@ public class PendingTab extends Fragment {
     }
 
     private void getData() {
-        DatabaseReference data = FirebaseDatabase.getInstance().getReference().child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-        data.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user).child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+        data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                requests.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     String id = snapshot.getKey();
                     String time = snapshot.child("dateTime").getValue().toString();
