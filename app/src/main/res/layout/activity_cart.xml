@@ -17,15 +17,6 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="0dp"
         android:orientation="horizontal">
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight=".5"
-            android:layout_height="wrap_content"
-            android:hint="table number"
-            android:id="@+id/table_number"
-            android:inputType="number"
-            android:layout_margin="5dp"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight=".5"

@@ -7,7 +7,24 @@
     tools:context=".ui.dashboard.DashboardFragment"
     android:orientation="vertical">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="10dp"
+        android:id="@+id/card"
+        app:cardElevation="10dp">
+
+        <Button
+            android:id="@+id/new_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:text="new order" />
+    </androidx.cardview.widget.CardView>
     <com.google.android.material.tabs.TabLayout
+        android:layout_below="@id/card"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         app:tabIndicatorColor="@color/colorPrimary"
@@ -20,11 +37,11 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="pending"/>
+            android:text="requested"/>
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="finished"/>
+            android:text="approved"/>
     </com.google.android.material.tabs.TabLayout>
     <View
         android:layout_width="match_parent"

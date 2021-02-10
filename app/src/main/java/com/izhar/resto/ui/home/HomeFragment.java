@@ -35,6 +35,9 @@ public class HomeFragment extends Fragment {
 
     TextView pending_text, finished_text;
     View root;
+    TabLayout tab;
+    ViewPager view;
+    PagerAdapter pagerAdapter;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         SharedPreferences user = getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
@@ -43,14 +46,25 @@ public class HomeFragment extends Fragment {
             pending_text = root.findViewById(R.id.pending);
             finished_text = root.findViewById(R.id.finished);
             setValues();
-            Button new_order = root.findViewById(R.id.new_order);
-            if (!user.getString("user", "admin").equalsIgnoreCase("cashier"))
-                new_order.setVisibility(View.GONE);
-            new_order.setOnClickListener(new View.OnClickListener() {
+            tab = root.findViewById(R.id.tab);
+            view = root.findViewById(R.id.viewpager);
+            pagerAdapter = new PagerAdapter(getFragmentManager(), tab.getTabCount(), user.getString("user", "admin"));
+            view.setAdapter(pagerAdapter);
+            view.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tab));
+            tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getContext(), OrderActivity.class));
-                    getActivity().finish();
+                public void onTabSelected(TabLayout.Tab tab) {
+                    view.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
                 }
             });
         }
@@ -61,9 +75,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void setValues() {
-        final DatabaseReference ordered = FirebaseDatabase.getInstance().getReference().child("ordered").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-        DatabaseReference finished = FirebaseDatabase.getInstance().getReference().child("finished").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-        ordered.addValueEventListener(new ValueEventListener() {
+        final DatabaseReference request = FirebaseDatabase.getInstance().getReference("cashier").child("request").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+        DatabaseReference approved = FirebaseDatabase.getInstance().getReference("cashier").child("approved").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+        request.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()){
@@ -78,7 +92,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        finished.addValueEventListener(new ValueEventListener() {
+        approved.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren())

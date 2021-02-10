@@ -5,16 +5,16 @@ import java.util.Map;
 
 public class Request {
     List<Food> foods;
-    String id, total, dateTime, table_number;
+    String id, total, dateTime, name;
 
     public Request() {
     }
 
-    public Request(List<Food> foods, String total, String dateTime, String table_number) {
+    public Request(List<Food> foods, String total, String dateTime, String name) {
         this.foods = foods;
         this.total = total;
         this.dateTime = dateTime;
-        this.table_number = table_number;
+        this.name = name;
     }
 
     public Request(List<Food> foods, String total, String dateTime) {
@@ -23,27 +23,11 @@ public class Request {
         this.dateTime = dateTime;
     }
 
-    public Request(String id, String total, String dateTime, String table_number) {
+    public Request(String id, String total, String dateTime, String name) {
         this.id = id;
         this.total = total;
         this.dateTime = dateTime;
-        this.table_number = table_number;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTable_number() {
-        return table_number;
-    }
-
-    public void setTable_number(String table_number) {
-        this.table_number = table_number;
+        this.name = name;
     }
 
     public List<Food> getFoods() {
@@ -52,6 +36,14 @@ public class Request {
 
     public void setFoods(List<Food> foods) {
         this.foods = foods;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTotal() {
@@ -68,5 +60,13 @@ public class Request {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

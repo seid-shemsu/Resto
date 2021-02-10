@@ -13,18 +13,18 @@
         android:id="@+id/relative"
         android:layout_margin="5dp">
         <TextView
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="70dp"
             android:gravity="center"
             android:layout_gravity="left"
             android:background="@color/colorPrimary"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:id="@+id/table_number"/>
+            android:id="@+id/time"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/time"
+            android:id="@+id/name"
             android:gravity="center"
             android:layout_centerInParent="true"
             android:layout_gravity="center"

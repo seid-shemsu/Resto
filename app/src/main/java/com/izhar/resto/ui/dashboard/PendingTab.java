@@ -58,7 +58,7 @@ public class PendingTab extends Fragment {
     }
 
     private void getData() {
-        DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user).child("pending").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+        DatabaseReference data = FirebaseDatabase.getInstance().getReference().child(user).child("request").child(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
         data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -67,8 +67,8 @@ public class PendingTab extends Fragment {
                     String id = snapshot.getKey();
                     String time = snapshot.child("dateTime").getValue().toString();
                     String price = snapshot.child("total").getValue().toString() + "\nETB";
-                    String table_number = snapshot.child("table_number").getValue().toString();
-                    requests.add(new Request(id, price, time, table_number));
+                    String name = snapshot.child("name").getValue().toString();
+                    requests.add(new Request(id, price, time, name));
                 }
                 if (requests.size()==0){
                     not_found.setVisibility(View.VISIBLE);
